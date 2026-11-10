@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mapping the Spotify Soundscape · COMP 6934 · Team 6</title>
+  <meta name="description" content="A visual story about what Spotify's audio features reveal about genres, popularity, mood and tempo.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="topbar" id="topbar">
+  <a class="brand" href="#top"><span class="brand-disc" aria-hidden="true"></span>Spotify Soundscape</a>
+  <nav aria-label="Chapters">
+    <a href="#prologue">Prologue</a>
+    <a href="#q1">Popularity</a>
+    <a href="#q2">Hits</a>
+    <a href="#q3">Genres</a>
+    <a href="#q4">Mood</a>
+    <a href="#q5">Tempo</a>
+    <a href="#epilogue">Takeaways</a>
+  </nav>
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-text">
+    <p class="kicker">COMP 6934 · Introduction to Data Visualization · Team 6</p>
+    <h1>Mapping the<br><em>Spotify Soundscape</em></h1>
+    <p class="standfirst">Spotify turns every song into ten numbers: how danceable it is, how energetic, how happy. We followed those numbers through 28,000 tracks. They describe a genre well. They say very little about whether a song becomes a hit.</p>
+    <p class="byline">By Joao P. F. Secundo, Eduardo Gracidas Reyes &amp; Abdullahi Abdulkabir</p>
+  </div>
+  <div class="vinyl-wrap" aria-hidden="true">
+    <div class="vinyl"></div>
+  </div>
+  <dl class="stats">
+    <div><dt class="count" data-target="28352">0</dt><dd>unique tracks</dd></div>
+    <div><dt class="count" data-target="6">0</dt><dd>genres</dd></div>
+    <div><dt class="count" data-target="24">0</dt><dd>sub-genres</dd></div>
+    <div><dt class="count" data-target="10">0</dt><dd>audio features</dd></div>
+  </dl>
+  <a class="scroll-cue" href="#prologue">Scroll to start the record <span aria-hidden="true">↓</span></a>
+</section>
+
+<main>
+
+<!-- ============ PROLOGUE ============ -->
+<section class="chapter" id="prologue">
+  <header class="chapter-head">
+    <p class="chapter-num">Prologue</p>
+    <h2>What is in the box?</h2>
+  </header>
+  <div class="prose">
+    <p>Our data is the <a href="https://www.kaggle.com/datasets/joebeachcapital/30000-spotify-songs/data" target="_blank" rel="noopener">30,000 Spotify Songs</a> dataset, pulled from the Spotify Web API with the <code>spotifyr</code> R package. Each row is a track that appeared in a genre playlist, with its popularity score (0–100), its release date and ten <strong>audio features</strong> that Spotify computes from the sound itself.</p>
+    <p>The first thing to know is that this is <strong>not a random sample of Spotify</strong>. The genres were collected in roughly equal amounts, as the six waffle charts below show.</p>
+  </div>
+  <figure class="fig">
+    <img src="img/fig01_waffle_genres.jpg" alt="Six waffle charts, one per genre, on identical grids; each is between 79% and 99% full, from Rock with 4,451 tracks to EDM with 5,537." loading="lazy">
+    <figcaption><b>Fig. 1</b> One waffle per genre, all on the same grid: each coloured square is 50 tracks. The six waffles are almost equally full, so “most popular genre” means most popular <em>within a balanced sample</em>.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Each genre was itself assembled from four sub-genre playlists, from <em>permanent wave</em> to <em>big room</em>. We will need this hierarchy when we ask what makes a genre sound like itself.</p>
+  </div>
+  <figure class="fig fig-narrow">
+    <img src="img/fig02_sunburst_subgenres.jpg" alt="Sunburst chart with six genres in the inner ring and their 24 sub-genres in the outer ring." loading="lazy">
+    <figcaption><b>Fig. 2</b> Inner ring: genre. Outer ring: its four sub-genres, shaded from the parent colour.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Finally, the ten numbers themselves. Danceability, energy and valence are roughly bell-shaped. Instrumentalness, speechiness, acousticness and liveness are piled up near zero, and loudness and duration use different units entirely. This is why we compare features with <strong>rank-based</strong> statistics (Spearman correlation, percentiles) instead of raw values.</p>
+  </div>
+  <figure class="fig fig-wide">
+    <img src="img/fig03_feature_distributions.jpg" alt="Ten small histograms, one per audio feature, several of them heavily skewed toward zero." loading="lazy">
+    <figcaption><b>Fig. 3</b> Distribution of each audio feature across 28,352 unique tracks. The aqua line marks the median.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ Q1 ============ -->
+<section class="chapter" id="q1">
+  <header class="chapter-head">
+    <p class="chapter-num">Chapter 1 · Question 1</p>
+    <h2>Which genres are the most popular?</h2>
+  </header>
+  <div class="prose">
+    <p class="lead">Pop comes first and EDM comes last. But the averages hide most of the story.</p>
+    <p>Pop has the highest mean popularity, followed by Latin and Rap. EDM trails clearly behind. The ridgeline shows the full distributions, and two things stand out. Every genre has a <strong>spike of tracks at zero</strong>, which are delisted or unrated songs. And the spread <em>inside</em> each genre is far wider than the gaps <em>between</em> genres.</p>
+  </div>
+  <div class="callouts">
+    <div class="callout"><span class="big" style="color:var(--pop)">45.9</span><span>Pop, mean popularity</span></div>
+    <div class="callout"><span class="big" style="color:var(--edm)">34.1</span><span>EDM, mean popularity</span></div>
+    <div class="callout"><span class="big">9%</span><span>of all tracks score exactly 0</span></div>
+  </div>
+  <figure class="fig">
+    <img src="img/fig04_ridgeline_popularity.jpg" alt="Ridgeline plot of popularity by genre, ordered Pop, Latin, Rap, Rock, R&B, EDM, each with a spike at zero." loading="lazy">
+    <figcaption><b>Fig. 4</b> Popularity distribution by genre, sorted by mean (white dot).</figcaption>
+  </figure>
+  <div class="prose">
+    <p>An average cannot tell us which genre produces <em>hits</em>. This Marimekko chart, a homage to the Reuters graphic we rebuilt in Lecture 5, sets each bar's width to the genre's share of the dataset and splits its height into popularity tiers. Pop and Latin put the most tracks in the peach <strong>“Hit” band (70+)</strong>. EDM has the fewest hits and the most zeros.</p>
+  </div>
+  <figure class="fig">
+    <img src="img/fig05_marimekko_tiers.jpg" alt="Marimekko chart of popularity tiers by genre: Pop 18% hits, Latin 16%, R&B 13%, Rock 10%, Rap 10%, EDM 6%." loading="lazy">
+    <figcaption><b>Fig. 5</b> Share of each genre's tracks in each popularity tier. Bar width is the genre's share of the dataset.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ Q2 ============ -->
+<section class="chapter" id="q2">
+  <header class="chapter-head">
+    <p class="chapter-num">Chapter 2 · Question 2</p>
+    <h2>Does a hit have a sound?</h2>
+  </header>
+  <div class="prose">
+    <p class="lead">Not one that Spotify's audio features can measure.</p>
+    <p>We correlated each feature with popularity across 25,736 tracks (leaving out the zeros). We set the axis to ±0.5 on purpose, so that no bar looks larger than it is. Every correlation falls in or near the “negligible” zone. The strongest is <strong>instrumentalness at −0.17</strong>: songs without vocals tend to be a little less popular.</p>
+  </div>
+  <figure class="fig">
+    <img src="img/fig06_lollipop_correlations.jpg" alt="Diverging lollipop chart: all Spearman correlations with popularity lie between −0.17 and +0.10." loading="lazy">
+    <figcaption><b>Fig. 6</b> Spearman correlation of each audio feature with popularity.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>A correlation looks at one feature at a time. Could hits have a distinctive <em>combination</em> of features? The radar compares the average percentile of each feature for hits (70+) and for low-popularity tracks (1–30). The two shapes overlap on almost every spoke. The clear exception is that hits are <strong>much less instrumental</strong>, and they are also a little shorter and more acoustic.</p>
+  </div>
+  <figure class="fig fig-narrow">
+    <img src="img/fig07_radar_hits_vs_low.jpg" alt="Radar chart in which the profiles of hits and low-popularity tracks overlap except on instrumentalness and duration." loading="lazy">
+    <figcaption><b>Fig. 7</b> Average percentile rank of each feature, hits vs. low-popularity tracks.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ Q3 ============ -->
+<section class="chapter" id="q3">
+  <header class="chapter-head">
+    <p class="chapter-num">Chapter 3 · Question 3</p>
+    <h2>What makes a genre sound like itself?</h2>
+  </header>
+  <div class="prose">
+    <p class="lead">Here the same ten numbers suddenly tell a lot.</p>
+    <p>Group the tracks by <em>genre</em> instead of by popularity, and the radar shapes pull apart. Try it yourself: switch genres on and off and hover over a spoke to read the values.</p>
+  </div>
+
+  <!-- interactive explorer -->
+  <div class="explorer" id="explorer">
+    <div class="explorer-controls" role="group" aria-label="Choose genres to compare" id="chips"></div>
+    <div class="explorer-body">
+      <svg id="radar" viewBox="0 0 560 560" role="img" aria-label="Interactive radar chart of genre audio profiles"></svg>
+      <aside class="explorer-side" id="readout" aria-live="polite">
+        <p class="readout-hint">Hover over or tap a spoke to compare the selected genres on that feature.</p>
+      </aside>
+    </div>
+    <p class="explorer-note">Values are average percentile ranks (0–100) within the dataset. The dashed ring marks the dataset average (50th percentile).</p>
+  </div>
+
+  <figure class="fig fig-wide">
+    <img src="img/fig08_radar_genre_fingerprints.jpg" alt="Six radar charts showing each genre's audio fingerprint." loading="lazy">
+    <figcaption><b>Fig. 8</b> Six sonic fingerprints. Rap is defined by speech, EDM by energy and instrumentals, and Rock by being the least danceable.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>The proposal also asked about <strong>sub-genres</strong>. We clustered all 24 using sound alone, with no genre labels. All four Rock sub-genres end up on one branch, and three of the four EDM sub-genres on another. R&amp;B, Rap, Latin and Pop sub-genres mix together, though: <em>hip hop</em> sits next to <em>neo soul</em>, and <em>latin hip hop</em> next to <em>new jack swing</em>.</p>
+  </div>
+  <figure class="fig fig-wide">
+    <img src="img/fig09_clustermap_subgenres.jpg" alt="Heatmap of 24 sub-genres by 10 features with a dendrogram; Rock and EDM sub-genres cluster together while others intermix." loading="lazy">
+    <figcaption><b>Fig. 9</b> Mean z-score per sub-genre, rows ordered by hierarchical clustering. The square next to each name shows its parent genre.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>To <em>measure</em> how well the features separate genres, we trained a random forest to predict genre from the ten features. It gets <strong>52%</strong> right, against about 17% by guessing. Shuffling one feature at a time shows which ones the model relies on most: <strong>danceability, tempo and speechiness</strong>.</p>
+  </div>
+  <figure class="fig">
+    <img src="img/fig10_feature_importance.jpg" alt="Bar chart of permutation importance: danceability, tempo and speechiness are highest." loading="lazy">
+    <figcaption><b>Fig. 10</b> Drop in test accuracy when each feature is shuffled.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Where the model goes wrong is informative too. Rock is recognised 72% of the time, EDM 66% and Rap 65%. Pop is right only <strong>29%</strong> of the time, and its tracks leak into every other genre: in terms of sound, Pop is close to the average of everything. The thickest single ribbon is <strong>R&amp;B mistaken for Rap</strong> (295 tracks), which matches the hip-hop flavour that the two genres share.</p>
+  </div>
+  <figure class="fig fig-narrow">
+    <img src="img/fig11_chord_confusion.jpg" alt="Chord diagram of the model's mistakes between genres: thick ribbons link R&amp;B with Rap and Pop with every other genre, while Rock has thin ribbons." loading="lazy">
+    <figcaption><b>Fig. 11</b> Chord diagram of the model's mistakes. Each outer arc holds all test tracks of a genre, and the hatched band marks those classified correctly. Each ribbon is tapered: its width at each end is the number of that genre's tracks predicted as the other.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ Q4 ============ -->
+<section class="chapter" id="q4">
+  <header class="chapter-head">
+    <p class="chapter-num">Chapter 4 · Question 4</p>
+    <h2>Has music become sadder?</h2>
+  </header>
+  <div class="prose">
+    <p class="lead">Yes, in the 2010s, and inside every genre.</p>
+    <p>Average <strong>valence</strong> (musical positivity) held at about 0.60 for decades and then fell to about <strong>0.46</strong> by 2015–19. Energy did not fall with it. In this sample, songs got gloomier without getting calmer.</p>
+  </div>
+  <figure class="fig">
+    <img src="img/fig12_lines_mood_time.jpg" alt="Line chart from 1970 to 2019: valence drops sharply after 2010 while energy stays around 0.7." loading="lazy">
+    <figcaption><b>Fig. 12</b> Yearly mean valence and energy (3-year rolling mean, 95% confidence band).</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Before we can trust that, we have to check a <strong>confounder</strong>. Old tracks in this sample are mostly Rock, while the 2010s add EDM, which has the lowest valence of any genre (0.41). A change in the genre mix alone could pull the average down.</p>
+  </div>
+  <figure class="fig">
+    <img src="img/fig13_stacked_area_genre_mix.jpg" alt="100% stacked area chart: Rock dominates the 1970s; by the 2010s all six genres share the sample." loading="lazy">
+    <figcaption><b>Fig. 13</b> Genre composition of the sample by release year.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>So we redrew valence <em>within</em> each genre. It falls in <strong>all six</strong>: by 0.08 in Rock and by up to 0.19 in EDM. The darker mood is real and not only an artefact of the changing mix.</p>
+  </div>
+  <figure class="fig fig-wide">
+    <img src="img/fig14_small_multiples_valence.jpg" alt="Six small-multiple line charts showing valence declining after 2010 in every genre." loading="lazy">
+    <figcaption><b>Fig. 14</b> Mean valence per genre (5-year rolling mean). In each panel, the other genres appear in grey for context.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ Q5 ============ -->
+<section class="chapter" id="q5">
+  <header class="chapter-head">
+    <p class="chapter-num">Chapter 5 · Question 5</p>
+    <h2>Does a faster song make you dance more?</h2>
+  </header>
+  <div class="prose">
+    <p class="lead">Only up to a point.</p>
+    <p>Mean danceability rises up to about 90 BPM, plateaus at about 0.70 through the <strong>“dance zone” of 90–125 BPM</strong>, and then declines for faster songs. Two bright columns show genre conventions: about 95 BPM for hip-hop grooves and 128 BPM for house and EDM. Because the relationship rises and then falls, the overall correlation is weak (ρ = −0.17).</p>
+  </div>
+  <figure class="fig">
+    <img src="img/fig15_hexbin_tempo_dance.jpg" alt="Hexbin density of tempo against danceability with a mean line peaking between 90 and 125 BPM." loading="lazy">
+    <figcaption><b>Fig. 15</b> Each hexagon counts tracks (log scale). The aqua line is the mean danceability per 5-BPM bin.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ EPILOGUE ============ -->
+<section class="chapter" id="epilogue">
+  <header class="chapter-head">
+    <p class="chapter-num">Epilogue</p>
+    <h2>Five takeaways</h2>
+  </header>
+  <ol class="takeaways">
+    <li><span class="q">Q1</span><p><b>Pop leads, EDM trails</b> in popularity, but the spread inside every genre is much larger than the gaps between them.</p></li>
+    <li><span class="q">Q2</span><p><b>No audio feature makes a hit.</b> Every correlation with popularity is |ρ| &lt; 0.2, and hits sound much like flops.</p></li>
+    <li><span class="q">Q3</span><p><b>Genres have clear fingerprints.</b> Danceability, tempo and speechiness give a genre away; Rock is easy to recognise and Pop is the average of everything.</p></li>
+    <li><span class="q">Q4</span><p><b>Music got gloomier in the 2010s</b>, with valence falling inside all six genres, while energy stayed high.</p></li>
+    <li><span class="q">Q5</span><p><b>Danceability peaks at 90–125 BPM</b> and falls for faster songs.</p></li>
+  </ol>
+  <blockquote class="pullquote">Spotify's audio features capture what a genre sounds like, and how music's mood has darkened, but they say surprisingly little about what makes a song popular.</blockquote>
+</section>
+
+<section class="methods" id="methods">
+  <h3>Methods &amp; notes</h3>
+  <ul>
+    <li><b>Data:</b> 30,000 Spotify Songs (Kaggle; collected with <code>spotifyr</code>), 32,833 rows. 5 rows without names were dropped. Tracks listed in several playlists were de-duplicated: genre analyses use one row per (track, genre) pair (30,380), and track-level analyses use one row per track (28,352).</li>
+    <li><b>Popularity</b> is Spotify's 0–100 score at collection time (2020). Q2 excludes tracks with popularity 0.</li>
+    <li><b>Time trends</b> use album release years 1970–2019.</li>
+    <li><b>Model:</b> random forest (300 trees), stratified 75/25 split, permutation importance with 10 repeats.</li>
+    <li><b>Code:</b> every figure is produced by <code>spotify_soundscape.ipynb</code> (Python, Matplotlib). This page uses only HTML, CSS and JavaScript.</li>
+    <li><b>Limitations:</b> playlist-based, genre-balanced sampling; audio features are Spotify's own black-box estimates.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="footer">
+  <p>COMP 6934 · Introduction to Data Visualization · Memorial University of Newfoundland · Fall 2026</p>
+  <p>Team 6 · Joao P. F. Secundo · Eduardo Gracidas Reyes · Abdullahi Abdulkabir</p>
+</footer>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged figure" hidden>
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close">×</button>
+  <img id="lightbox-img" alt="">
+  <p id="lightbox-cap"></p>
+</div>
+<div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
