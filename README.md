@@ -1,14 +1,14 @@
 <div align="center">
 
-# 🎧 Mapping the Spotify Soundscape
+# Mapping the Spotify Soundscape
 
 **What do Spotify's audio features reveal about genres, popularity, mood and tempo?**
 
 *COMP 6934 · Introduction to Data Visualization · Memorial University of Newfoundland · Fall 2026*
 
-[**▶ Open the interactive story**](https://euardogracidas.github.io/IDV-project/) &nbsp;·&nbsp;
+[**Open the interactive story**](https://euardogracidas.github.io/IDV-project/) &nbsp;·&nbsp;
 [Dataset](https://www.kaggle.com/datasets/joebeachcapital/30000-spotify-songs/data) &nbsp;·&nbsp;
-[Run it locally](#-run-it-locally)
+[Run it locally](#run-it-locally)
 
 ![HTML](https://img.shields.io/badge/HTML-E34F26?logo=html5&logoColor=white)
 ![CSS](https://img.shields.io/badge/CSS-1572B6?logo=css3&logoColor=white)
@@ -22,13 +22,13 @@
 
 ---
 
-## 📖 The story in one sentence
+## Summary
 
 > Spotify's audio features capture **what a genre sounds like**, and **how music's mood has darkened**, but they say surprisingly little about **what makes a song popular**.
 
 We followed ten audio features (danceability, energy, valence, acousticness, speechiness, instrumentalness, liveness, loudness, tempo and duration) through **28,352 tracks** across **6 genres** and **24 sub-genres**. The result is a scroll-driven visual story with 15 figures and one interactive chart.
 
-## 🔍 Five questions, five findings
+## Research questions and findings
 
 | | Question | Finding |
 |:-:|---|---|
@@ -38,7 +38,7 @@ We followed ten audio features (danceability, energy, valence, acousticness, spe
 | **Q4** | Has music become sadder? | **Yes, in the 2010s.** Valence fell from about 0.60 to about 0.46, and it fell inside all six genres, while energy stayed high. |
 | **Q5** | Does a faster song make you dance more? | **Only up to a point.** Danceability peaks at 90–125 BPM and declines for faster songs. |
 
-## 🖼️ A few of the visualizations
+## Selected visualizations
 
 <table>
   <tr>
@@ -53,16 +53,16 @@ We followed ten audio features (danceability, energy, valence, acousticness, spe
 
 **All 15 charts:** waffle (per genre) · sunburst · small-multiple histograms · ridgeline · Marimekko · diverging lollipop · radar · radar small multiples · clustered heatmap + dendrogram · permutation importance · chord diagram · line + confidence band · 100% stacked area · small-multiple lines · hexbin.
 
-## 🎨 Design
+## Design
 
 - **Techniques:** borrowed from the Reuters graphic *Journey into sleep*, which we rebuilt in Lecture 5. The page uses a dark full-bleed canvas, annotations inside the chart instead of legends, and hatching for emphasis.
 - **Palette ("late-night vinyl"):** a midnight-plum background, warm ivory text, a sunset ramp (plum → magenta → coral → peach) for magnitudes, and an aqua ↔ coral pair for opposite directions.
 - **Genre colours:** each genre keeps one colour across every figure and on the website. We validated the genre palette for colour-blind separation.
 
-## 🗂️ Repository structure
+## Repository structure
 
 ```
-docs/                 ← the website (served by GitHub Pages)
+docs/                 website (served by GitHub Pages)
 ├── index.html        story, figures and captions
 ├── css/style.css     theme
 ├── js/main.js        scroll progress, reveal animations, lightbox, interactive radar
@@ -70,7 +70,7 @@ docs/                 ← the website (served by GitHub Pages)
 └── img/              figures exported from the analysis notebook
 ```
 
-## 💻 Run it locally
+## Run it locally
 
 The website uses only **HTML, CSS and vanilla JavaScript**. It has no build step, no libraries and no server.
 
@@ -81,7 +81,7 @@ git clone https://github.com/EuardoGracidas/IDV-project.git
 
 The figures were produced in Python (pandas, NumPy, Matplotlib, SciPy, scikit-learn and PyWaffle) in the project notebook `spotify_soundscape.ipynb`.
 
-## 📊 Data & methods
+## Data and methods
 
 - **Source:** [30,000 Spotify Songs](https://www.kaggle.com/datasets/joebeachcapital/30000-spotify-songs/data) (Kaggle; collected from the Spotify Web API with `spotifyr`). The file has 32,833 rows.
 - **De-duplication:** tracks listed in several playlists were de-duplicated. Genre analyses use one row per (track, genre) pair (30,380 rows), and track-level analyses use one row per track (28,352 rows).
@@ -89,7 +89,7 @@ The figures were produced in Python (pandas, NumPy, Matplotlib, SciPy, scikit-le
 - **Model:** random forest (300 trees) with a stratified 75/25 split and permutation importance.
 - **Limitations:** the sample is playlist-based and genre-balanced, not random, and the audio features are Spotify's own estimates.
 
-## 👥 Team 6
+## Team 6
 
 - **Joao P. F. Secundo**
 - **Eduardo Gracidas Reyes**
