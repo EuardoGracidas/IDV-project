@@ -6,16 +6,6 @@
 
 *COMP 6934 · Introduction to Data Visualization · Memorial University of Newfoundland · Fall 2026*
 
-[**Open the interactive story**](https://euardogracidas.github.io/IDV-project/) &nbsp;·&nbsp;
-[Dataset](https://www.kaggle.com/datasets/joebeachcapital/30000-spotify-songs/data) &nbsp;·&nbsp;
-[Run it locally](#run-it-locally)
-
-![HTML](https://img.shields.io/badge/HTML-E34F26?logo=html5&logoColor=white)
-![CSS](https://img.shields.io/badge/CSS-1572B6?logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
-![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
-![Matplotlib](https://img.shields.io/badge/Matplotlib-11557c)
-
 <img src="docs/img/fig08_radar_genre_fingerprints.jpg" alt="Six radar charts showing each genre's audio fingerprint" width="88%">
 
 </div>
